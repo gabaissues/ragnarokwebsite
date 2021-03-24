@@ -1,0 +1,41 @@
+footer {
+    flex-wrap: nowrap;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer > h1 {
+    padding-top: 40px;
+    padding-bottom: 30px;
+    color: white;
+}
+
+footer > img {
+    width: 600px;
+    display: flex;
+}
+
+footer > a {
+    text-decoration: none;
+    font-family: 'Nunito';
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+@media (max-width: 600px) {
+
+    footer > h1 {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    footer > img {
+        width: 250px;
+    }
+
+}

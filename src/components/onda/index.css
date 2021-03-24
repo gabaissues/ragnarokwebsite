@@ -1,0 +1,7 @@
+.onda {
+    position: absolute;
+    z-index: -1;
+    bottom: -1%;
+    width: 100%;
+    overflow: hidden;
+}
