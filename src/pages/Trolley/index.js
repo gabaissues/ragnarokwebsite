@@ -1,40 +1,26 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import axios from 'axios'
 
-import './index.css'
-import Onda from '../../assets/onda2.svg'
+import './styles.js'
 import Trolley from '../../assets/cart.svg'
-import { Alert } from '@material-ui/lab';
-import TextField from '@material-ui/core/TextField';
 
 import MercadoPago from '../../assets/mercadopago.svg'
+import { Container, Image, Lista, Item, Text, Button, Input, Cupom, Alerta, Grid } from './styles.js'
 
 export default function App() {
 
     const [reload, reloadChange] = React.useState(true)
     const [valorBuy, setValor] = React.useState(0)
     const [cupom, setCupom] = React.useState(false)
-    const [nulo, setNulo] = React.useState(false)
-
-    React.useEffect(() => {
-
-        let value = JSON.parse(localStorage.getItem('@carrinho'))
-
-        if (value === '[]') {
-
-            setNulo(true)
-
-        }
-
-    }, [])
-
-    const myRefs = useRef('')
+    const [inputValue, setInputValue] = React.useState('')
 
     const mercadopago = async () => {
 
-        console.log(myRefs.current.value)
+        let valor = ''
+        if(!inputValue === '') valor = inputValue.target.value
 
-        if (myRefs.current.value === '') {
+
+        if (valor === '') {
 
             let produtos = "?"
 
@@ -44,7 +30,7 @@ export default function App() {
 
             })
 
-            axios.get(`http://localhost:8080/createlink/${produtos}`).then(response => {
+            axios.get(`http://18.230.153.191:3000/createlink/${produtos}`).then(response => {
 
                 window.location.replace(response.data.link)
 
@@ -52,7 +38,7 @@ export default function App() {
 
         } else {
 
-            axios.get(`http://localhost:8080/getcupom/?cupom=${myRefs.current.value}`).then(response => {
+            axios.get(`http://18.230.153.191:3000/getcupom/?cupom=${valor}`).then(response => {
 
                 if (response.data.sucess === false) {
 
@@ -68,7 +54,7 @@ export default function App() {
 
                     })
 
-                    axios.get(`http://localhost:8080/createlink/${produtos}cupom=${myRefs.current.value}`).then(response => {
+                    axios.get(`http://18.230.153.191:3000/createlink/${produtos}cupom=${valor}`).then(response => {
 
                         window.location.replace(response.data.link)
 
@@ -152,75 +138,68 @@ export default function App() {
 
     return (
 
-        <div className="carrinho">
+        <Container>
 
-            <img className="onda-one" src={Onda} alt='' />
-            <img className="onda-two" src={Onda} alt='' />
+            <Grid>
 
-            <div className="carrinho-box">
+            <Image src={Trolley} />
+            <Text>Seu carrinho de compras</Text>
+            <Lista>
 
-                <img src={Trolley} alt='' />
-                <h1>Seu carrinho de compras</h1>
+                {JSON.parse(localStorage.getItem('@carrinho'))?.map((todo, index) => (
 
-                <ul>
+                    <Item key={todo.name}>
 
-                    {JSON.parse(localStorage.getItem('@carrinho'))?.map((todo, index) => (
+                        <Button onClick={() => removeUni(todo.nome, todo.valor)}>
 
-                        <li key={todo.nome}>
+                            <Text>-</Text>
 
-                            <button onClick={() => removeUni(todo.nome, todo.valor)}>
+                        </Button>
 
-                                <h1>-</h1>
+                        <Text value>{todo.unidade}</Text>
 
-                            </button>
+                        <Button onClick={() => addUni(todo.nome, todo.valor)}>
 
-                            <h1 className="value">{todo.unidade}</h1>
+                            <Text>+</Text>
 
-                            <button onClick={() => addUni(todo.nome, todo.valor)}>
+                        </Button>
 
-                                <h1>+</h1>
+                        <Text>{todo.nome}</Text>
 
-                            </button>
 
-                            <h1 className="name">{todo.nome}</h1>
+                    </Item>
 
-                        </li>
+                ))}
 
-                    ))}
+            </Lista>
+            <Cupom>
 
-                    {nulo ?
+                <Input onChange={setInputValue} placeholder="Insira seu cupom..."></Input>
 
-                        <h5 style={{ padding: '20px' }}>Não possui itens em seu carrinho.</h5>
+            </Cupom>
 
-                        : null}
+            <Text>Valor total: {valorBuy.toLocaleString('pt-br', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 })}</Text>
+            <Button onClick={mercadopago}>
 
-                </ul>
+                <Image src={MercadoPago} />
+                <Text>MercadoPago</Text>
 
-                <div className="cupon-div">
+            </Button>
 
-                    <TextField id="outlined-basic" inputRef={myRefs} label="Cupom" variant="outlined" />
+            {cupom ?
 
-                </div>
+                <Alerta>
 
-                <h1 className="total-value">Valor total: {valorBuy.toLocaleString('pt-br', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 })}</h1>
-                <button onClick={mercadopago} className='button-metodo'>
+                    <Text>Você não inseriu um cúpom válido, tente novamente.</Text>
 
-                    <img src={MercadoPago} alt='' />
-                    <h1>MercadoPago</h1>
+                </Alerta>
 
-                </button>
+                : null}
+                
+            </Grid>
 
-                {cupom ?
+        </Container>
 
-                    <Alert className="alert-cupom" variant="outlined" severity="error">
-                        <h1>Você não inseriu um cúpom válido.</h1>
-                    </Alert>
-
-                    : null}
-
-            </div>
-
-        </div>
 
     )
 

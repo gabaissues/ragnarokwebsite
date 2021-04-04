@@ -2,10 +2,8 @@ import React from 'react'
 
 import Trolley from '../../assets/cart.svg'
 import TrolleyWhite from '../../assets/cartwhite.svg'
-import Close from '../../assets/close.svg'
 
-import './index.css'
-import { Link } from 'react-router-dom'
+import { Container, TrolleyOff, TrolleyOn, Image, Grid, Close, Lista, Button, Text, Item, Link } from './styles'
 
 export default function App() {
 
@@ -80,57 +78,60 @@ export default function App() {
 
     return (
 
-        <div className="carrinho">
+        <Container>
 
-            <div onClick={() => { functionChange(); }} style={{ display: `${activate ? 'flex' : 'none'}` }} className={`${activate ? 'trolley trolley-animation-down' : 'trolley trolley-animation-up'}`} >
+            <TrolleyOff hidden={activate} onClick={functionChange}>
 
-                <img src={Trolley} alt='' />
+                <Image src={Trolley} />
 
-            </div>
+            </TrolleyOff>
+            <TrolleyOn hidden={activate}>
 
-            <div className={`${activate ? 'trolley-open trolley-animation-up' : 'trolley-open trolley-animation-down'}`} style={{ display: `${activate ? 'none' : 'flex'}` }} >
+                <Grid onClick={functionChange}>
 
-                <img onClick={functionChange} className="close-trolley" src={Close} alt='' />
-                <img className="logo-trolley" src={Trolley} alt='' />
+                    <Close>X</Close>
+                    <Text>Fechar carrinho</Text>
 
-                <ul>
+                </Grid>
+                <Lista>
 
                     {JSON.parse(localStorage.getItem('@carrinho'))?.map((todo, index) => (
 
-                        <li key={todo.nome}>
+                        <Item>
 
-                            <button onClick={() => removeUni(todo.nome, todo.valor)}>
+                            <Button onClick={() => removeUni(todo.nome, todo.valor)}>
 
-                                <h1>-</h1>
+                                <Text>-</Text>
 
-                            </button>
+                            </Button>
 
-                            <h1 className="value">{todo.unidade}</h1>
+                            <Text value>{todo.unidade}</Text>
 
-                            <button onClick={() => addUni(todo.nome, todo.valor)}>
+                            <Button onClick={() => addUni(todo.nome, todo.valor)}>
 
-                                <h1>+</h1>
+                                <Text>+</Text>
 
-                            </button>
+                            </Button>
 
-                            <h1 className="name">{todo.nome}</h1>
+                            <Text>{todo.nome}</Text>
 
-                        </li>
+
+                        </Item>
 
                     ))}
 
-                </ul>
+                </Lista>
 
-                <button style={{ margin: '20px' }} className="trolley-button-buy">
+                <Button>
 
-                    <img src={TrolleyWhite} alt='' />
-                    <Link to="/carrinho">Efetuar compra</Link>
+                    <Image src={TrolleyWhite} />
+                    <Link href="/carrinho">Comprar</Link>
+                        
+                </Button>
 
-                </button>
+            </TrolleyOn>
 
-            </div>
-
-        </div>
+        </Container>
 
     )
 

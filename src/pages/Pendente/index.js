@@ -1,29 +1,28 @@
-import Logo from '../../assets/logo.svg'
-import Onda from '../../assets/onda2.svg'
+import React, { Component } from 'react'
 
-import './index.css'
+import { Container, Grid, Image, Paragraph, Button, Text } from './styles'
+import Logo from '../../assets/static/logo.svg'
 
-import { Link } from 'react-router-dom'
+export default class pendente extends Component {
+    render() {
+        return (
+            <Container>
 
-export default function App() {
+                <Grid>
 
-    //http://localhost:3000/compras/pendente/id/email/valor/nome
+                    <Image src={Logo} />
 
-    return (
+                </Grid>
+                <Grid>
 
-        <div className="pendente">
+                    <Text>TheRagnarok</Text>
+                    <Paragraph>Obrigado pela sua compra! Nós da RagnarokStore temos o prazer de ter você como nosso cliente. Já estamos prossesando sua compra, após o pagamento ser concluido na forma de pagamento escolhida, e aprovado, o produto será entregado dentro de 3 dias úteis.</Paragraph>
 
-            <img src={Logo} alt='' />
-            <h1>RagnarokStore</h1>
-            <p>Obrigado pela sua compra! Nós da RagnarokStore temos o prazer de ter você como nosso cliente. Já estamos prossesando sua compra, após o pagamento ser concluido na forma de pagamento escolhida, e aprovado, o produto será entregado dentro de 3 dias úteis.</p>
+                    <Button href="/">Início</Button>
 
-            <img className="onda-one" src={Onda} alt='' />
-            <img className="onda-two" src={Onda} alt='' />
+                </Grid>
 
-            <button><Link to="/">Início</Link></button>
-
-        </div>
-
-    )
-
+            </Container>
+        )
+    }
 }

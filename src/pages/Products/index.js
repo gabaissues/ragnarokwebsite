@@ -1,21 +1,18 @@
 import React from 'react'
 import firebase from 'firebase'
 
-import Logo from '../../assets/logo.svg'
-import Arrow from '../../assets/arrow.svg'
+import NavBar from '../../components/navbar/index.js'
+import Trolley from '../../components/trolley/index.js'
+
+import OndaImage from '../../assets/onda.svg'
+import Footer from '../../components/footer/index.js'
+import Logo from '../../assets/static/logo.svg'
 import CartWhite from '../../assets/cartwhite.svg'
 
-import NavBar from '../../components/navbar/index.js'
-import Onda from '../../components/onda/index.js'
-import Footer from '../../components/footer/index.js'
-import Trolley from '../../components/trolley/index.js'
-import NavBarMobile from '../../components/navbar_mobile/index.js'
-
-import './index.css'
+import { Box, Button, Onda, Container, Header, Image, Item, Lista, Paragraph, Products, Text } from './styles'
 
 export default function App() {
 
-    const [activate, activateChange] = React.useState(true)
     const [products, setProducts] = React.useState()
 
     React.useEffect(() => {
@@ -39,18 +36,6 @@ export default function App() {
         getProducts()
 
     })
-
-    const functionChange = () => {
-
-        activateChange(false)
-
-        setTimeout(() => {
-
-            activateChange(true)
-
-        }, 1000)
-
-    }
 
     const saveProduct = async (produto, valor) => {
 
@@ -94,62 +79,57 @@ export default function App() {
 
     return (
 
-        <div className='products'>
+        <Container>
 
-            <NavBarMobile />
+            <Header>
+
+                <Image src={Logo} />
+                <Text>The Ragnarok</Text>
+                <Paragraph>Antes de adquirir qualquer produto da nossa loja esteja ciente dos termos e condições e faq, caso reste dúvidas referente ao produto você poderá entrar em nosso Discord e sanar todas elas.</Paragraph>
+
+                <Onda src={OndaImage} />
+
+            </Header>
+
+            <Text division>Produtos</Text>
+
+            <Products>
+
+                {products?.map((a, index) => (
+
+                    <Box key={a.name}>
+
+                        <Image src={a.image} />
+
+                        <Text>{a.name}</Text>
+                        <Paragraph>{Number(a.value).toLocaleString('pt-br', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 })}</Paragraph>
+
+                        <Lista>
+
+                            <Item>{a.descriptionOne}</Item>
+                            <Item>{a.descriptionTwo}</Item>
+                            <Item>{a.descriptionThree}</Item>
+                            <Item>{a.descriptionFour}</Item>
+
+                        </Lista>
+                        <Button onClick={() => { saveProduct(a.name, Number(a.value)) }}>
+
+                            <Image src={CartWhite} />
+                            <Text>Comprar</Text>
+
+                        </Button>
+
+                    </Box>
+
+                ))}
+
+            </Products>
+            <Footer />
+
             <NavBar />
             <Trolley />
 
-            <header>
-
-                <img alt='' src={Logo} />
-                <h1>The Ragnarok</h1>
-                <p>Lorem ipsum dolor sit amet, nean. etus lorem mi sed semper. Integer ornare duis amet duis lacus eu.</p>
-
-                <img alt='' style={{ width: 50, height: 50 }} src={Arrow} />
-
-                <Onda />
-
-            </header>
-
-            <div className='products-conteudo'>
-                <div className="products-items">
-
-                    {products?.map((a, index) => (
-
-                        <div key={a.id} className={`${activate ? 'products-box' : 'products-box products-animate'}`}>
-
-                            <img alt='' src={a.image} />
-                            <h1>{a.name}</h1>
-
-                            <h1>{Number(a.value).toLocaleString('pt-br', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 })}</h1>
-                            <ul>
-
-                                <li>{a.descriptionOne}</li>
-                                <li>{a.descriptionTwo}</li>
-                                <li>{a.descriptionThree}</li>
-                                <li>{a.descriptionFour}</li>
-
-                            </ul>
-
-                            <button onClick={() => { saveProduct(a.name, Number(a.value)); functionChange(); }}>
-
-                                <img alt='' src={CartWhite} />
-                                <h1>Comprar</h1>
-
-                            </button>
-
-                        </div>
-
-                    ))}
-
-                </div>
-
-            </div>
-
-            <Footer />
-
-        </div>
+        </Container>
 
     )
 

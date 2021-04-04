@@ -1,63 +1,104 @@
+import React, { Component } from 'react'
+import { Container, NavBarDesktop, Image, Lista, Item, Text, Content, NavBarMobile, Box, Barra } from './styles'
 
-import './index.css'
+import {
+  BrowserRouter as Router,
+  Switch,
+  useLocation
+} from "react-router-dom";
 
-import House from '../../assets/house.svg'
-import MoneyBag from '../../assets/moneybag.svg'
-import User from '../../assets/user.svg'
-import Check from '../../assets/check.svg'
-import Instagram from '../../assets/instagram.svg'
-import Twitter from '../../assets/twitter.svg'
-import Discord from '../../assets/discord.svg'
 
-import { useHistory } from "react-router-dom";  
+import House from '../../assets/navbar/house.svg'
+import Card from '../../assets/navbar/card.svg'
+import Partners from '../../assets/navbar/partners.svg'
+import Feedback from '../../assets/navbar/feedback.svg'
 
-export default function NavBar() {
+export default class navbar extends Component {
 
-    let history = useHistory()
+  constructor(props) {
 
-    const Initial = () => {
+    super(props)
 
-        history.push('/')
+    this.state = {
+      animation: true,
+      hidden: true
+    }
+
+  }
+
+  navigation = (page) => {
+
+    if(page === 'initial') {
+
+      window.location.replace('https://theragnarok.com.br/')
+
+    } else {
+
+      window.location.replace(`https://theragnarok.com.br/${page}`)
 
     }
 
-    const Products = () => {
+  }
 
-        history.push('/produtos')
+  change = () => {
+
+    if(this.state.hidden === false) {
+
+      this.setState({ animation: true })
+
+      setTimeout(() => {
+
+        this.setState({ hidden: true })
+  
+      }, 900)
+
+    } else {
+
+      this.setState({ animation: false })
+      this.setState({ hidden: false })
 
     }
 
-    const Partners = () => {
+  }
 
-        history.push('/parceiros')
+  render() {
+    return (
+      <Container>
 
-    }
+        <NavBarDesktop>
 
-    const FeedBack = () => {
+          <Image onClick={() => { this.navigation('initial') }} src={House} />
+          <Image onClick={() => { this.navigation('produtos') }} src={Card} />
+          <Image onClick={() => { this.navigation('parceiros') }} src={Partners} />
+          <Image onClick={() => { this.navigation('avaliações') }} src={Feedback} />
 
-        history.push('/avaliações')
+        </NavBarDesktop>
+        <NavBarMobile>
 
-    }
+          <Box onClick={() => this.change()}>
 
-    return(
+            <Barra></Barra>
+            <Barra></Barra>
+            <Barra></Barra>
 
-        <nav className="navbar_desktop">
+          </Box>
+          <Content animation={this.state.animation} hidden={this.state.hidden}>
 
-            <img alt='' onClick={Initial} src={House} />
-            <img alt='' onClick={Products} src={MoneyBag} />
-            <img alt='' onClick={Partners} src={User} />
-            <img alt='' onClick={FeedBack}  src={Check} />
+              <Lista>
 
-            <div className="redes">
+                <Item onClick={() => { this.navigation('initial') }}><Text>Início</Text></Item>
+                <Item onClick={() => { this.navigation('produtos') }}><Text>Produtos</Text></Item>
+                <Item onClick={() => { this.navigation('parceiros') }}><Text>Avaliações</Text></Item>
+                <Item onClick={() => { this.navigation('avaliações') }}><Text>Parceiros</Text></Item>
 
-                <img alt=''  src={Instagram} />
-                <img alt=''  src={Twitter} />
-                <img alt=''src={Discord} />
+              </Lista>
 
-            </div>
+              
+          </Content>
 
-        </nav>
+        </NavBarMobile>
 
+      </Container>
     )
-
+  }
 }

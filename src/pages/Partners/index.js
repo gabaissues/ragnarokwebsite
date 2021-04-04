@@ -1,68 +1,66 @@
-
-import Logo from '../../assets/logo.svg'
+import React from 'react'
+import firebase from 'firebase'
 
 import NavBar from '../../components/navbar/index.js'
-import Onda from '../../components/onda/index.js'
-import NavBarMobile from '../../components/navbar_mobile/index.js'
 
-import './index.css'
+import OndaImage from '../../assets/onda.svg'
+import Logo from '../../assets/static/logo.svg'
+
+import { Container, Image, Text, Header, Partners, Grid, Onda } from './styles.js'
 
 export default function App() {
 
+    const database = firebase.database()
+    let partners = []
+
+    React.useEffect(async () => {
+
+        async function getPartners() {
+
+            let ref = await database.ref(`Parceiros`).once('value')
+            ref.forEach(x => {
+
+                partners.push({ name: x.val().name, image: x.val().image })
+
+            })
+
+        }
+
+        getPartners()
+        
+    })
+
     return (
 
-        <div className="partners">
+        <Container>
 
-            <NavBarMobile />
+            <Header>
+
+                <Image src={Logo} />
+                <Text>The Ragnarok</Text>
+                <Text subtitle>Parceiros</Text>
+
+                <Onda src={OndaImage} />
+
+            </Header>
+            <Partners>
+
+                {partners.map((a) => (
+
+                    <Grid key={a.name}>
+
+                        <Image src={a.image} />
+                        <Text>{a.name}</Text>
+
+                    </Grid>
+
+                ))}
+
+            </Partners>
+
             <NavBar />
 
-            <div className="partners-header">
-
-                <img src={Logo} alt='' />
-                <h1 className="title">The Ragnarok</h1>
-                <h1 className="subtitle">Parceiros</h1>
-
-            </div>
-
-            <div className="partners-content">
-
-                <div className="partners-box">
-
-                    <img alt='' src='https://images-ext-1.discordapp.net/external/yM635l0gfY-3qtyHFLNPFduOB-ZACHzEJt9ivWxNXaI/%3Fsize%3D2048/https/cdn.discordapp.com/icons/803473185910947930/08916e46fd5dbb6d7b6137d652b819ab.png' />
-                    <h1>Nome do servidor</h1>
-
-                </div>
-                <div className="partners-box">
-
-                    <img alt='' src='https://images-ext-1.discordapp.net/external/yM635l0gfY-3qtyHFLNPFduOB-ZACHzEJt9ivWxNXaI/%3Fsize%3D2048/https/cdn.discordapp.com/icons/803473185910947930/08916e46fd5dbb6d7b6137d652b819ab.png' />
-                    <h1>Nome do servidor</h1>
-
-                </div>
-                <div className="partners-box">
-
-                    <img alt='' src='https://images-ext-1.discordapp.net/external/yM635l0gfY-3qtyHFLNPFduOB-ZACHzEJt9ivWxNXaI/%3Fsize%3D2048/https/cdn.discordapp.com/icons/803473185910947930/08916e46fd5dbb6d7b6137d652b819ab.png' />
-                    <h1>Nome do servidor</h1>
-
-                </div>
-                <div className="partners-box">
-
-                    <img alt='' src='https://images-ext-1.discordapp.net/external/yM635l0gfY-3qtyHFLNPFduOB-ZACHzEJt9ivWxNXaI/%3Fsize%3D2048/https/cdn.discordapp.com/icons/803473185910947930/08916e46fd5dbb6d7b6137d652b819ab.png' />
-                    <h1>Nome do servidor</h1>
-
-                </div>
-                <div className="partners-box">
-
-                    <img alt='' src='https://images-ext-1.discordapp.net/external/yM635l0gfY-3qtyHFLNPFduOB-ZACHzEJt9ivWxNXaI/%3Fsize%3D2048/https/cdn.discordapp.com/icons/803473185910947930/08916e46fd5dbb6d7b6137d652b819ab.png' />
-                    <h1>Nome do servidor</h1>
-
-                </div>
-                
-
-            </div>
-
-            <Onda />
-
-        </div>
+        </Container>
 
     )
 

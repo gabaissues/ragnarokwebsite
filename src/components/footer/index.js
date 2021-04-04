@@ -1,19 +1,19 @@
 
-import './index.css'
 import Formas from '../../assets/formas.svg'
+import { Container, Text, Image, Link } from './styles'
 
 export default function NavBar() {
 
-    return(
+    return (
 
-        <footer>
+        <Container>
 
-            <h1>The Ragnarok © Todos os direitos reservados.</h1>
-            <img alt='' src={Formas} />
-            
-            <a href="https://github.com/gbkkk/">Developed By gb.#0001</a>
+            <Text>The Ragnarok © Todos os direitos reservados.</Text>
+            <Image src={Formas} />
 
-        </footer>
+            <Link>Developed By gb.#0001</Link>
+
+        </Container>
 
     )
 
